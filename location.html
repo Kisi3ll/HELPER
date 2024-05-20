@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lokalizacja użytkownika</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+        
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        nav {
+            background-color: #444;
+            text-align: center;
+        }
+        
+        nav ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        
+        nav ul li {
+            display: inline;
+            margin-right: 20px;
+        }
+        
+        nav ul li a {
+            color: #fff;
+            text-decoration: none;
+            padding: 5px 10px;
+            transition: background-color 0.3s ease;
+        }
+        
+        nav ul li a:hover {
+            background-color: #666;
+        }
+        
+        section {
+            padding: 20px;
+            text-align: center;
+        }
+        
+        footer {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 20px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+
+        #map {
+            width: 100%;
+            height: 400px;
+            margin-bottom: 20px;
+        }
+
+        #location-list {
+            text-align: left;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        #location-list h3 {
+            margin-top: 0;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Lokalizacja użytkownika</h1>
+    </header>
+    <nav>
+        <ul>
+            <li><a href="index.html">Strona Główna</a></li>
+            <li><a href="about.html">O Nas</a></li>
+            <li><a href="contact.html">Kontakt</a></li>
+            <li><a href="location.html">Lokalizacja</a></li>
+        </ul>
+    </nav>
+    <section>
+        <h2>Lokalizacja</h2>
+        <div id="map"></div>
+        <div id="location-list">
+            <h3>Ostatnie wyszukiwane lokalizacje</h3>
+            <ol id="locations"></ol>
+        </div>
+    </section>
+
+
+    <script>
+        // Funkcja inicjująca mapę
+        function initMap() {
+            // Utwórz mapę Google
+            const map = new google.maps.Map(document.getElementById("map"), {
+                zoom: 15, // Powiększenie mapy
+            });
+
+            // Pobierz aktualną lokalizację urządzenia
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function(position) {
+                    const pos = {
+                        lat: position.coords.latitude,
+                        lng: position.coords.longitude
+                    };
+
+                    // Ustaw centrum mapy na aktualną lokalizację urządzenia
+                    map.setCenter(pos);
+
+                    // Dodaj marker w aktualnej lokalizacji
+                    new google.maps.Marker({
+                        position: pos,
+                        map: map,
+                        title: "Twoja aktualna lokalizacja"
+                    });
+
+                    // Dodaj aktualną lokalizację do listy ostatnich lokalizacji
+                    addToLastLocations(pos);
+                }, function() {
+                    handleLocationError(true, map.getCenter());
+                });
+            } else {
+                // Geolokalizacja nie jest obsługiwana przez przeglądarkę
+                handleLocationError(false, map.getCenter());
+            }
+
+            // Dodaj aktualną lokalizację do listy ostatnich lokalizacji
+            function addToLastLocations(pos) {
+                let lastLocations = JSON.parse(localStorage.getItem('lastLocations')) || [];
+                lastLocations.push({ lat: pos.lat, lng: pos.lng });
+                localStorage.setItem('lastLocations', JSON.stringify(lastLocations));
+                refreshLocationList();
+            }
+
+            // Odśwież listę ostatnich lokalizacji na stronie
+            function refreshLocationList() {
+                let locationList = document.getElementById('locations');
+                locationList.innerHTML = "";
+                let lastLocations = JSON.parse(localStorage.getItem('lastLocations')) || [];
+                lastLocations.forEach(location => {
+                    let li = document.createElement('li');
+                    li.textContent = `Szerokość geograficzna: ${location.lat}, Długość geograficzna: ${location.lng}`;
+                    locationList.appendChild(li);
+                });
+            }
+        }
+
+        // Funkcja obsługująca błędy związane z geolokalizacją
+        function handleLocationError(browserHasGeolocation, pos) {
+            console.log(browserHasGeolocation ?
+                        'Błąd: Usługa geolokalizacji nie działa.' :
+                        'Błąd: Twoja przeglądarka nie obsługuje geolokalizacji.');
+        }
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDldX6X93x0TmyB0C4MEYbCwZ7ox6F92RU&callback=initMap" async defer></script>
+
+</body>
+</html>

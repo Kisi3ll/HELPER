@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HELPER</title>
+    <style>
+
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        nav {
+            background-color: #444;
+            text-align: center;
+        }
+        
+        nav ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        
+        nav ul li {
+            display: inline;
+            margin-right: 20px;
+        }
+        
+        nav ul li a {
+            color: #fff;
+            text-decoration: none;
+            padding: 5px 10px;
+            transition: background-color 0.3s ease;
+        }
+        
+        nav ul li a:hover {
+            background-color: #666;
+        }
+        
+        section {
+            padding: 20px;
+            text-align: center;
+        }
+
+        .action-button {
+            background-color: #ff3333; /* Czerwony kolor na początku */
+            color: #fff;
+            text-decoration: none;
+            padding: 15px 30px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+            display: inline-block;
+            height:150px;
+            width: 150px;
+            margin-top: 20px;
+
+            cursor: pointer; /* Dodany kursor wskazujący na możliwość kliknięcia */
+            border: none;
+        }
+
+        .action-button:hover {
+            background-color: #ffcc00; /* Żółty kolor po najechaniu myszką */
+            height: 200px;
+            width: 200px;
+        }
+        
+        
+        footer {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 20px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>HELPER</h1>
+    </header>
+    <nav>
+        <ul>
+            <li><a href="index.html">Strona Główna</a></li>
+            <li><a href="about.html">O Nas</a></li>
+            <li><a href="contact.html">Logowania</a></li>
+            <li><a href="location.html">Lokalizacja</a></li>
+        </ul>
+    </nav>
+    <section>
+        <button class="action-button" onclick="confirmHelp()">WEZWIJ POMOC</button>
+    </section>
+    <footer>
+        &copy; 2024 HELPER
+    </footer>
+
+    <script>
+        function confirmHelp() {
+            if (confirm("Czy na pewno chcesz wezwać pomoc? Wybranie opcji 'OK' spowoduje przekierowanie do strony z lokalizacją użytkownika.")) {
+                // Jeśli użytkownik kliknie "OK", przenieś go do odpowiedniej strony
+                window.location.href = "location.html";
+            }
+        }
+    </script>
+</body>
+</html>
